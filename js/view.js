@@ -23,6 +23,7 @@ export default class View {
 
   bindGameResetEvent(handler) {
     this.$.resetBtn.addEventListener("click", handler);
+    this.$.modalBtn.addEventListener("click", handler);
   }
 
   bindNewRoundEvent(handler) {
@@ -31,8 +32,36 @@ export default class View {
 
   bindPlayerMoveEvent(handler) {
     this.$$.squares.forEach((square) => {
-      square.addEventListener("click", handler);
+      square.addEventListener("click", () => handler(square));
     });
+  }
+
+  openModal(message) {
+    this.$.modal.classList.remove("hidden");
+    this.$.modalText.innerText = message;
+  }
+
+  closeAll() {
+    this.#closeModal();
+    this.#closeMenu();
+  }
+
+  clearMoves() {
+    this.$$.squares.forEach((square) => {
+      square.replaceChildren();
+    });
+  }
+
+  #closeModal() {
+    this.$.modal.classList.add("hidden");
+  }
+
+  #closeMenu() {
+    this.$.menuItems.classList.add("hidden");
+    this.$.menuBtn.classList.remove("border");
+    const icon = this.$.menuBtn.querySelector("i");
+    icon.classList.remove("fa-chevron-up");
+    icon.classList.add("fa-chevron-down");
   }
 
   #toggleMenu() {
@@ -44,16 +73,20 @@ export default class View {
     icon.classList.toggle("fa-chevron-down");
   }
 
-  #setTurnIndicator(playerId) {
+  handlePlayerMove(player, squareEl) {
+    const icon = document.createElement("i");
+    icon.classList.add("fa-solid", player.iconClass, player.colorClass);
+    squareEl.replaceChildren(icon);
+  }
+
+  setTurnIndicator(player) {
     const icon = document.createElement("i");
     const label = document.createElement("p");
 
-    this.$.turn.classList.add(playerId === 1 ? "yellow" : "turquoise");
-    this.$.turn.classList.remove(playerId === 1 ? "turquoise" : "yellow");
+    icon.classList.add("fa-solid", player.iconClass, player.colorClass);
 
-    icon.classList.add(playerId === 1 ? "fa-x" : "fa-o");
-
-    label.innerText = `Player ${playerId}, you're up!`;
+    label.classList.add(player.colorClass);
+    label.innerText = `${player.name}, you're up!`;
 
     this.$.turn.replaceChildren(icon, label);
   }
