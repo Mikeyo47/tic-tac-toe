@@ -12,6 +12,9 @@ export default class View {
     this.$.modalText = this.#qs('[data-id="modal-text"]');
     this.$.modalBtn = this.#qs('[data-id="modal-btn"]');
     this.$.turn = this.#qs('[data-id="turn"]');
+    this.$.p1wins = this.#qs('[data-id="p1-wins"]');
+    this.$.p2wins = this.#qs('[data-id="p2-wins"]');
+    this.$.ties = this.#qs('[data-id="ties"]');
 
     this.$$.squares = this.#qsAll('[data-id="square"]');
 
@@ -34,6 +37,12 @@ export default class View {
     this.$$.squares.forEach((square) => {
       square.addEventListener("click", () => handler(square));
     });
+  }
+
+  updateScoreboard(p1Wins, p2Wins, ties) {
+      this.$.p1wins.innerText = `${p1Wins} Wins`;
+      this.$.p2wins.innerText = `${p2Wins} Wins`;
+      this.$.ties.innerText = `${ties}`;
   }
 
   openModal(message) {
