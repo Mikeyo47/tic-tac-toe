@@ -1,3 +1,3 @@
 # tic-tac-toe
 
-a project based on [this](https://www.freecodecamp.org/news/frontend-web-development-in-depth-project-tutorial/) freeCodeCamp tutorial.
+a project based on Zach Gollwitzers [tutorial](https://github.com/zachgoll/tic-tac-toe-subscriber-refactor)
