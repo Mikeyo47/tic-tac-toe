@@ -6,10 +6,10 @@ const initialValue = {
   },
 };
 
-export default class Store {
-  #state = initialValue;
-
-  constructor(players) {
+export default class Store extends EventTarget {
+  constructor(key, players) {
+    super();
+    this.storageKey = key;
     this.players = players;
   }
 
@@ -100,17 +100,18 @@ export default class Store {
   }
 
   newRound() {
-      this.reset();
+    this.reset();
 
-      const stateClone = structuredClone(this.#getState());
-      stateClone.history.allGames.push(...stateClone.history.currentRoundGames);
-      stateClone.history.currentRoundGames = [];
+    const stateClone = structuredClone(this.#getState());
+    stateClone.history.allGames.push(...stateClone.history.currentRoundGames);
+    stateClone.history.currentRoundGames = [];
 
-      this.#saveState(stateClone);
+    this.#saveState(stateClone);
   }
 
   #getState() {
-    return this.#state;
+    const item = window.localStorage.getItem(this.storageKey);
+    return item ? JSON.parse(item) : initialValue;
   }
 
   #saveState(stateOrFn) {
@@ -129,6 +130,8 @@ export default class Store {
         throw new Error("stateOrFn must be a function or an object");
     }
 
-    this.#state = newState;
+    window.localStorage.setItem(this.storageKey, JSON.stringify(newState));
+
+    this.dispatchEvent(new Event("statechange"));
   }
 }
