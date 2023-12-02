@@ -1,4 +1,17 @@
-import type { GameState, Player } from "./types";
+import type { GameState, GameStatus, Move, Player } from "./types";
+
+type PlayerWithWins = Player & { wins: number };
+
+export type DerivedStats = {
+  playerWithStats: PlayerWithWins[];
+  ties: number;
+};
+
+export type DerivedGame = {
+  moves: Move[];
+  currentPlayer: Player;
+  status: GameStatus;
+};
 
 const initialState: GameState = {
   currentGameMoves: [],
@@ -16,7 +29,7 @@ export default class Store extends EventTarget {
     super();
   }
 
-  get stats() {
+  get stats(): DerivedStats {
     const state = this.#getState();
     return {
       playerWithStats: this.players.map((player) => {

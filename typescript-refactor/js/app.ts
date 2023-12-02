@@ -1,7 +1,8 @@
 import Store from "./store.js";
+import type { Player } from "./types";
 import View from "./view.js";
 
-const players = [
+const players: Player[] = [
   {
     id: 1,
     name: "Player 1",
@@ -19,7 +20,6 @@ const players = [
 function init() {
   const view = new View();
   const store = new Store("live-t3-storage-key", players);
-
 
   // current tab state changes
   store.addEventListener("statechange", () => {
