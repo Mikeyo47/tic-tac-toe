@@ -42,8 +42,6 @@ export default function App() {
       return stateClone;
     });
   }
-  {
-  }
 
   function handlePlayerMove(squareId: number, player: Player) {
     setState((prev) => {

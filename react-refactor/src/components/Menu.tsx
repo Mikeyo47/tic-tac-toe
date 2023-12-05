@@ -10,7 +10,12 @@ export default function Menu({ onAction }: Props) {
 
   return (
     <div className="menu">
-      <button className="menu-btn" onClick={() => setMenuOpen((prev) => !prev)}>
+      <button
+        className={classNames("menu-btn", menuOpen ? "border" : "")}
+        onMouseDown={() => {
+          setMenuOpen((prev) => !prev);
+        }}
+      >
         Actions
         <i
           className={classNames(
@@ -22,8 +27,22 @@ export default function Menu({ onAction }: Props) {
 
       {menuOpen && (
         <div className="items border">
-          <button onClick={() => onAction("reset")}>Reset</button>
-          <button onClick={() => onAction("new-round")}>New Round</button>
+          <button
+            onClick={() => {
+              onAction("reset");
+              setMenuOpen(false);
+            }}
+          >
+            Reset
+          </button>
+          <button
+            onClick={() => {
+              onAction("new-round");
+              setMenuOpen(false);
+            }}
+          >
+            New Round
+          </button>
         </div>
       )}
     </div>
